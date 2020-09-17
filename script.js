@@ -68,6 +68,7 @@ window.onload = updateClearButtons();
 
 function addFilter() {
     const divContainer = document.getElementById("filter-container");
+    if (divContainer.children.length > 5) return;
 
     const filterElement = document.createElement("span");
 
@@ -93,9 +94,8 @@ function updateClearButtons() {
 }
 
 function removeInputElement(index) {
-    const buttonToRemove = document.querySelectorAll(".span-removeable")[index];
-
-    return buttonToRemove.parentNode.removeChild(buttonToRemove);
+    const container = document.getElementById("filter-container");
+    return container.children[index].remove();
 }
 
 //SEARCHING FUNCTIONS

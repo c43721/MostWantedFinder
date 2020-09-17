@@ -11,35 +11,39 @@
 <body>
     <script src="data.js" defer></script>
     <script src="script.js" defer></script>
+    <script src="radio.js" defer></script>
 
+    <input type="radio" id="nameSearch" name="searchoptions" value="0">
+    <label for="name">Search By Name</label><br>
+    <input type="radio" id="filterSearch" name="searchoptions" value="1">
+    <label for="filter">Search By Filter</label>
 
-    <div class="by-name">
-        <label for="firstname">First name: </label>
-        <input type="text" id="firstName" name="firstname">
-        <label for="lastname">Last name: </label>
-        <input type="text" id="lastName" name="lastname">
-        <button onclick="searchByName()">Search By Name</button>
+    <div id="main-search">
+        <div class="by-name" id="byNameSearch">
+            <label for="firstname">First name: </label>
+            <input type="text" id="firstName" name="firstname">
+            <label for="lastname">Last name: </label>
+            <input type="text" id="lastName" name="lastname">
+            <button onclick="searchByName()">Search By Name</button>
 
-        <div class="output" id="nameSearchOutput"></div>
-    </div>
-
-    <div class="by-trait">
-        <label for="filter">Filters</label>
-        <div id="filter-container">
-            <span class="span-removeable filter">
-                <input type="text" name="filter" id="filter1">
-                <i class="remove-icon">&times;</i>
-            </span>
+            <div class="output" id="nameSearchOutput"></div>
         </div>
 
-        <button onclick="searchByTraits()">Search By Traits</button>
-        <button onclick="addFilter()">Add Filter</button>
+        <div class="by-trait" id="byTraitSearch">
+            <label for="filter">Filters</label>
+            <div id="filter-container">
+                <span class="span-removeable filter">
+                    <input type="text" name="filter" id="filter1">
+                    <i class="remove-icon">&times;</i>
+                </span>
+            </div>
 
-        <div class="output" id="traitSearchOutput"></div>
+            <button onclick="searchByTraits()">Search By Traits</button>
+            <button onclick="addFilter()">Add Filter</button>
+
+            <div class="output" id="traitSearchOutput"></div>
+        </div>
     </div>
-
-
-
 </body>
 
 </html>
