@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Most Wanted Project</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <script src="data.js" defer></script>
+    <script src="script.js" defer></script>
+
+
+    <div class="by-name">
+        <label for="firstname">First name: </label>
+        <input type="text" id="firstName" name="firstname">
+        <label for="lastname">Last name: </label>
+        <input type="text" id="lastName" name="lastname">
+        <button onclick="searchByName()">Search By Name</button>
+
+        <div class="output" id="nameSearchOutput"></div>
+    </div>
+
+    <div class="by-trait">
+        <label for="filter">Filters</label>
+        <div id="filter-container">
+            <span class="span-removeable filter">
+                <input type="text" name="filter" id="filter1">
+                <i class="remove-icon">&times;</i>
+            </span>
+        </div>
+
+        <button onclick="searchByTraits()">Search By Traits</button>
+        <button onclick="addFilter()">Add Filter</button>
+
+        <div class="output" id="traitSearchOutput"></div>
+    </div>
+
+
+
+</body>
+
+</html>
