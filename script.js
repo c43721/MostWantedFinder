@@ -73,3 +73,29 @@ function removeInputElement(index) {
 }
 
 window.onload = updateClearButtons();
+
+
+//SEARCHING FUNCTIONS
+
+function getDescendants(id, array = data) {
+    const children = [];
+    for (const person of array) {
+        if (person.id === id) continue;
+        if (person.parents.includes(id)) children.push(person);
+        if (person.parents.length) {
+            const child = getDescendants(person.id, getParents(person.parents));
+            if (child && child.id) children.push(child);
+        }
+    }
+    return children
+}
+
+function getParents(parentArray) {
+    const parentObjectArray = [];
+    for (const parent of parentArray) {
+        parentObjectArray.push(data.filter(person => {
+            return person.id === parent;
+        })[0]);
+    }
+    return parentObjectArray;
+}
