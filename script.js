@@ -2,21 +2,29 @@
 
 const filterOptions = ["id", "gender", "dob", "height", "weight", "eyeColor", "occupation"];
 
+//MAIN SEARCH FUNCTIONS
 function searchByName() {
-    const firstName = document.getElementById("firstName").value;
-    const lastName = document.getElementById("lastName").value;
+    const firstName = document.getElementById("firstName").value.trim().toLowerCase();
+    const lastName = document.getElementById("lastName").value.trim().toLowerCase();
 
     const outputElement = document.getElementById("nameSearchOutput");
 
     const filteredPeople = data.filter(person => {
-        if (!lastName) return person.firstName.toLowerCase() === firstName.toLowerCase();
-        if (!firstName) return person.lastName.toLowerCase() === lastName.toLowerCase();
-        return person.firstName.toLowerCase() === firstName.toLowerCase() && person.lastName.toLowerCase() === lastName.toLowerCase();
+        if (!lastName) return person.firstName.toLowerCase() === firstName;
+        if (!firstName) return person.lastName.toLowerCase() === lastName;
+        return person.firstName.toLowerCase() === firstName && person.lastName.toLowerCase() === lastName;
     })
 
     if (!filteredPeople.length) return outputElement.innerText = "No search results";
-    else return outputElement.innerText = JSON.stringify(filteredPeople);
+
+    outputElement.innerHTML = filteredPeople.map(filteredPerson => {
+        return `<div>${filteredPerson.firstName} ${filteredPerson.lastName} 
+        <button onclick="alertToUser(${filteredPerson.id})">Show Information</button> 
+        <button onclick="alertDescendants(${filteredPerson.id})">Get Descendants</button> 
+        <button onclick="alertFamily(${filteredPerson.id})">Get Family</button></div>`;
+    }).join("\n")
 }
+
 
 function searchByTraits() {
     const outputElement = document.getElementById("traitSearchOutput");
@@ -26,9 +34,6 @@ function searchByTraits() {
     let filteredPeople = data;
     filterArray.forEach(filterElement => {
         const [selector, value] = filterElement.children[0].value.split(": ");
-        if (!value || !selector) return outputElement.innerText = "No valid filter(s).";
-        if (!filterOptions.includes(selector)) return outputElement.innerText = "One of your options contains an invalid filter."
-
         const filterResult = filteredPeople.filter(person => {
             return person[selector] == value;
         })
@@ -37,8 +42,29 @@ function searchByTraits() {
     })
 
     if (!filteredPeople.length) return outputElement.innerText = "No search results";
-    return outputElement.innerText = JSON.stringify(filteredPeople);
+
+    outputElement.innerText = filteredPeople.map(filteredPerson => {
+        return `${filteredPerson.firstName} ${filteredPerson.lastName}`;
+    }).join("\n")
 }
+
+//ALERT FUNCTIONS
+function alertToUser(id) {
+    return alert(JSON.stringify(getPersonFromId(id)));
+}
+
+function alertDescendants(id) {
+    const result = getDescendants(id)
+    alert(JSON.stringify(result.map(member => member.firstName).join(", ")))
+}
+
+function alertFamily(id) {
+    const result = getImmediateFamily(id);
+    alert(JSON.stringify(result.map(member => member.firstName).join(", ")))
+}
+
+//FILTER TEXT FUNCTIONS
+window.onload = updateClearButtons();
 
 function addFilter() {
     const divContainer = document.getElementById("filter-container");
@@ -72,11 +98,7 @@ function removeInputElement(index) {
     return buttonToRemove.parentNode.removeChild(buttonToRemove);
 }
 
-window.onload = updateClearButtons();
-
-
 //SEARCHING FUNCTIONS
-
 function getDescendants(id, array = data) {
     const children = [];
     for (const person of array) {
