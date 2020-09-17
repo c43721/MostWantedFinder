@@ -80,9 +80,8 @@ window.onload = updateClearButtons();
 function getDescendants(id, array = data) {
     const children = [];
     for (const person of array) {
-        if (person.id === id) continue;
         if (person.parents.includes(id)) children.push(person);
-        if (person.parents.length) {
+        if (person.parents) {
             const child = getDescendants(person.id, getParents(person.parents));
             if (child && child.id) children.push(child);
         }
@@ -98,4 +97,27 @@ function getParents(parentArray) {
         })[0]);
     }
     return parentObjectArray;
+}
+
+function getPersonFromId(id) {
+    return data.filter(person => {
+        return person.id === id;
+    })[0]
+}
+
+function getImmediateFamily(id) {
+    const targetPerson = getPersonFromId(id);
+    const family = [];
+    for (const person of data) {
+        if (person.currentSpouse === id) family.push(person);
+
+        if (person.parents.includes(id)) family.push(person);
+
+        if (targetPerson.parents.includes(person.id)) family.push(person);
+
+        const children = getDescendants(id);
+
+        family.concat(children);
+    }
+    return family;
 }
