@@ -50,17 +50,36 @@ function searchByTraits() {
 
 //ALERT FUNCTIONS
 function alertToUser(id) {
-    return alert(JSON.stringify(getPersonFromId(id)));
+    const userObject = getPersonFromId(id);
+
+    let resultString = "";
+    for (const [key, value] of Object.entries(userObject)) {
+        if (key === "parents") resultString += `${key}: ${value.length ? getParents(value).map(parent => parent.firstName).join(', ') : "NO PARENTS"}\n`;
+        else if (key === "currentSpouse") resultString += `${key}: ${value ? getPersonFromId(value).firstName : "NO SPOUSE"}\n`;
+        else resultString += `${key}: ${value}\n`;
+    }
+
+    alert(resultString);
 }
 
 function alertDescendants(id) {
     const result = getDescendants(id)
-    alert(JSON.stringify(result.map(member => member.firstName).join(", ")))
+
+    const relations = result.map(familyMember => {
+        return `${familyMember.firstName} ${familyMember.lastName}`;
+    }).join("\n");
+
+    alert(relations || `NO CHILDREN`);
 }
 
 function alertFamily(id) {
     const result = getImmediateFamily(id);
-    alert(JSON.stringify(result.map(member => member.firstName).join(", ")))
+
+    const relations = result.map(familyMember => {
+        return `${familyMember.firstName} ${familyMember.lastName}`;
+    }).join("\n");
+
+    alert(relations || "NO FAMILY");
 }
 
 //FILTER TEXT FUNCTIONS
@@ -99,16 +118,37 @@ function removeInputElement(index) {
 }
 
 //SEARCHING FUNCTIONS
+// function getDescendants(id, array = data) {
+//     const children = [];
+//     for (const person of array) {
+//         console.log(
+//             `TESTING: ${getPersonFromId(id).firstName}\nAGAINST: ${person.firstName}\n\nAGAINST PARENTS: ${getParents(person.parents).map(parent => parent.firstName).join(", ")}\nTEST PARENTS: ${getPersonFromId(id).parents.map(parent => getPersonFromId(parent).firstName).join(", ")}\n\nTEST RESULT: ${person.parents.includes(id)}`
+//         )
+//         // if (person.parents.includes(getPersonFromId(id).id)) children.push(person);
+//         if (person.parents.includes(id)) children.push(person);
+//         if (person.parents.includes(id)) children.push(person);
+//         if (person.parents) {
+//             const child = getDescendants(person.id, getParents(person.parents));
+//             if (child && child.id) {
+//                 children.push(child)
+//             };
+//         }
+//     }
+//     return children
+// }
+
+//O(n log n)
 function getDescendants(id, array = data) {
     const children = [];
-    for (const person of array) {
+    for (const person of array) 
         if (person.parents.includes(id)) children.push(person);
-        if (person.parents) {
-            const child = getDescendants(person.id, getParents(person.parents));
-            if (child && child.id) children.push(child);
-        }
+    
+    for (const child of children) {
+        const grandChildren = getDescendants(child.id);
+        if (grandChildren.length) return children.concat(grandChildren);
     }
-    return children
+
+    return children;
 }
 
 function getParents(parentArray) {
@@ -122,9 +162,7 @@ function getParents(parentArray) {
 }
 
 function getPersonFromId(id) {
-    return data.filter(person => {
-        return person.id === id;
-    })[0]
+    return data.filter(person => person.id)[0];
 }
 
 function getImmediateFamily(id) {
@@ -132,14 +170,8 @@ function getImmediateFamily(id) {
     const family = [];
     for (const person of data) {
         if (person.currentSpouse === id) family.push(person);
-
         if (person.parents.includes(id)) family.push(person);
-
         if (targetPerson.parents.includes(person.id)) family.push(person);
-
-        const children = getDescendants(id);
-
-        family.concat(children);
     }
     return family;
 }
