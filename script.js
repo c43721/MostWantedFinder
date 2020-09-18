@@ -145,9 +145,9 @@ function getDescendants(id, array = data) {
 
 function getParents(parentArray) {
     const parentObjectArray = [];
-    for (const parent of parentArray) {
-        parentObjectArray.push(data.filter(person => person.id === parent)[0]);
-    }
+    for (const parent of parentArray) 
+        parentObjectArray.push(getPersonFromId(parent.id));
+
     return parentObjectArray;
 }
 
