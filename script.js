@@ -66,9 +66,7 @@ function alertToUser(id) {
 function alertDescendants(id) {
     const result = getDescendants(id)
 
-    const relations = result.map(familyMember => {
-        return `${familyMember.firstName} ${familyMember.lastName}`;
-    }).join("\n");
+    const relations = result.map(familyMember => `${familyMember.firstName} ${familyMember.lastName}`).join("\n");
 
     alert(relations || `NO CHILDREN`);
 }
@@ -76,9 +74,7 @@ function alertDescendants(id) {
 function alertFamily(id) {
     const result = getImmediateFamily(id);
 
-    const relations = result.map(familyMember => {
-        return `${familyMember.firstName} ${familyMember.lastName}`;
-    }).join("\n");
+    const relations = result.map(familyMember => `${familyMember.firstName} ${familyMember.lastName}`).join("\n");
 
     alert(relations || "NO FAMILY");
 }
@@ -105,12 +101,7 @@ function addFilter() {
 
 function updateClearButtons() {
     const allButtons = document.querySelectorAll(".remove-icon");
-
-    allButtons.forEach((removeBtn, index) => {
-        removeBtn.addEventListener("click", () => {
-            removeInputElement(index);
-        })
-    })
+    allButtons.forEach((removeBtn, index) => removeBtn.addEventListener("click", removeInputElement(index)));
 }
 
 function removeInputElement(index) {
@@ -155,9 +146,7 @@ function getDescendants(id, array = data) {
 function getParents(parentArray) {
     const parentObjectArray = [];
     for (const parent of parentArray) {
-        parentObjectArray.push(data.filter(person => {
-            return person.id === parent;
-        })[0]);
+        parentObjectArray.push(data.filter(person => person.id === parent)[0]);
     }
     return parentObjectArray;
 }
