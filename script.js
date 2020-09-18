@@ -17,12 +17,7 @@ function searchByName() {
 
     if (!filteredPeople.length) return outputElement.innerText = "No search results";
 
-    outputElement.innerHTML = filteredPeople.map(filteredPerson => {
-        return `<div>${filteredPerson.firstName} ${filteredPerson.lastName} 
-        <button onclick="alertToUser(${filteredPerson.id})">Show Information</button> 
-        <button onclick="alertDescendants(${filteredPerson.id})">Get Descendants</button> 
-        <button onclick="alertFamily(${filteredPerson.id})">Get Family</button></div>`;
-    }).join("\n")
+    outputElement.innerHTML = returnSearchMenu(filteredPeople);
 }
 
 
@@ -34,18 +29,24 @@ function searchByTraits() {
     let filteredPeople = data;
     filterArray.forEach(filterElement => {
         const [selector, value] = filterElement.children[0].value.split(": ");
-        const filterResult = filteredPeople.filter(person => {
-            return person[selector] == value;
-        })
-
+        const filterResult = filteredPeople.filter(person => person[selector] == value);
         filteredPeople = filterResult;
     })
 
     if (!filteredPeople.length) return outputElement.innerText = "No search results";
 
-    outputElement.innerText = filteredPeople.map(filteredPerson => {
-        return `${filteredPerson.firstName} ${filteredPerson.lastName}`;
-    }).join("\n")
+    outputElement.innerHTML = returnSearchMenu(filteredPeople);
+}
+
+//MENU FUNCTIONS
+function returnSearchMenu(people) {
+    return people.map(person => {
+        return `
+        <div>${person.firstName} ${person.lastName} 
+        <button onclick="alertToUser(${person.id})">Show Information</button> 
+        <button onclick="alertDescendants(${person.id})">Get Descendants</button> 
+        <button onclick="alertFamily(${person.id})">Get Family</button></div>`;
+    }).join("\n");
 }
 
 //ALERT FUNCTIONS
@@ -140,9 +141,9 @@ function removeInputElement(index) {
 //O(n log n)
 function getDescendants(id, array = data) {
     const children = [];
-    for (const person of array) 
+    for (const person of array)
         if (person.parents.includes(id)) children.push(person);
-    
+
     for (const child of children) {
         const grandChildren = getDescendants(child.id);
         if (grandChildren.length) return children.concat(grandChildren);
@@ -162,7 +163,7 @@ function getParents(parentArray) {
 }
 
 function getPersonFromId(id) {
-    return data.filter(person => person.id)[0];
+    return data.filter(person => person.id === id)[0];
 }
 
 function getImmediateFamily(id) {
