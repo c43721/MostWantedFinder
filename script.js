@@ -52,10 +52,10 @@ function searchByTraits() {
 function returnSearchMenu(people) {
     return people.map(person => {
         return `
-        <div>${person.firstName} ${person.lastName} 
-        <button onclick="alertToUser(${person.id})">Show Information</button> 
-        <button onclick="alertDescendants(${person.id})">Get Descendants</button> 
-        <button onclick="alertFamily(${person.id})">Get Family</button></div>`;
+        <div><span class=\"person-name\">${person.firstName} ${person.lastName}</span>
+        <button class=\"btn\" onclick="alertToUser(${person.id})">Show Information</button> 
+        <button class=\"btn\" onclick="alertDescendants(${person.id})">Get Descendants</button> 
+        <button class=\"btn\" onclick="alertFamily(${person.id})">Get Family</button></div>`;
     }).join("\n");
 }
 

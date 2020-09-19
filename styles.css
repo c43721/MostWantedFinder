@@ -92,6 +92,26 @@ input {
     background-color: #7f8c8d;
     border-radius: .3em;
     color: #fff;
+    padding: 2px 5px;
+    padding-right: 0px;
+}
+
+button {
+    background-color: #bdc3c7;
+    border: 1px solid #95a5a6;
+    outline: none;
+    font: inherit;
+    cursor: pointer;
+    padding: .25em .5em;
+    border-radius: .3em;
+}
+
+button:hover, button:focus {
+    box-shadow: 0 0 5px 0 #2980b9;
+}
+
+.btn {
+    
 }
 
 .label {
@@ -104,6 +124,10 @@ input:focus {
 
 .output > div {
     padding: 5px;
+}
+
+.person-name {
+    font-size: 1.35rem;
 }
 
 #byNameSearch,
