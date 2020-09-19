@@ -101,7 +101,7 @@ function addFilter() {
 
 function updateClearButtons() {
     const allButtons = document.querySelectorAll(".remove-icon");
-    allButtons.forEach((removeBtn, index) => removeBtn.addEventListener("click", removeInputElement(index)));
+    allButtons.forEach((removeBtn, index) => removeBtn.addEventListener("click", () => removeInputElement(index)));
 }
 
 function removeInputElement(index) {
@@ -145,7 +145,7 @@ function getDescendants(id, array = data) {
 
 function getParents(parentArray) {
     const parentObjectArray = [];
-    for (const parent of parentArray) 
+    for (const parent of parentArray)
         parentObjectArray.push(getPersonFromId(parent.id));
 
     return parentObjectArray;
