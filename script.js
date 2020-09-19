@@ -15,7 +15,7 @@ function searchByName() {
         return person.firstName.toLowerCase() === firstName && person.lastName.toLowerCase() === lastName;
     })
 
-    if (!filteredPeople.length) return outputElement.innerText = "No search results";
+    if (!filteredPeople.length) return outputElement.innerHTML = "<div class=\"no-results\">No search results.</div>";
 
     outputElement.innerHTML = returnSearchMenu(filteredPeople);
 }
@@ -27,13 +27,23 @@ function searchByTraits() {
     const filterArray = document.querySelectorAll(".filter");
 
     let filteredPeople = data;
+    let validFilter = true;
     filterArray.forEach(filterElement => {
-        const [selector, value] = filterElement.children[0].value.split(": ");
-        const filterResult = filteredPeople.filter(person => person[selector] == value);
-        filteredPeople = filterResult;
+        const inputValue = filterElement.children[0].value;
+        if (!inputValue) validFilter = false;
+
+        const result = inputValue.match(/[id|gender|dob|height|weight|eyeColor|occupation]+: .+/g);
+
+        if (!result) return validFilter = false;
+        else {
+            const [selector, value] = inputValue.split(": ");
+            const filterResult = filteredPeople.filter(person => person[selector] == value);
+            filteredPeople = filterResult;
+        }
     })
 
-    if (!filteredPeople.length) return outputElement.innerText = "No search results";
+    if (!filteredPeople.length) return outputElement.innerHTML = "<div class=\"no-results\">No search results.</div>";
+    if (!validFilter) return alert(`One of your filters does not match a valid input. Our valid inputs include: ${filterOptions.join(", ")}.`);
 
     outputElement.innerHTML = returnSearchMenu(filteredPeople);
 }
@@ -55,7 +65,7 @@ function alertToUser(id) {
 
     let resultString = "";
     for (const [key, value] of Object.entries(userObject)) {
-        if (key === "parents") resultString += `${key}: ${value ? getParents(value).map(parent => parent.firstName).join(", ") : "NO PARENTS"}\n`;
+        if (key === "parents") resultString += `${key}: ${value.length ? getParents(value).map(parent => parent.firstName).join(", ") : "NO PARENTS"}\n`;
         else if (key === "currentSpouse") resultString += `${key}: ${value ? getPersonFromId(value).firstName : "NO SPOUSE"}\n`;
         else resultString += `${key}: ${value}\n`;
     }

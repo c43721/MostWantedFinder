@@ -1,6 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+body {
+    margin: 0;
+    background-color: #34495e;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+}
+
+.search-selector {
+    background-color: #2c3e50;
+    font-size: 26px;
+    display: flex;
+    padding: 7px;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-selector > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 15px;
+}
+
+.main-search {
+    background-color: #2c3e50;
+    display: flex;
+}
+
+.by-trait-header {
+    font-size: 25px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.no-results {
+    color: #e74c3c;
+    font-size: 18px;
+}
+
+.by-name, 
+.by-trait {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.by-name > input, 
+.by-trait > input {
+    margin-bottom: 10px;
+}
+
+.by-name > input:last-child, 
+.by-trait > input:last-child {
+    margin-bottom: none;
+}
+
+.filter-container {
+    margin: 7px;
+}
+
+.filter-container > span {
+    padding: 5px;
+}
+
 .remove-icon {
     font-weight: bold;
     cursor: pointer;
+    outline: none;
+    color: #e74c3c;
+}
+
+.output {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 25px auto;
+}
+
+input {
+    border: none;
+    outline: none;
+    font-size: inherit;
+    font: inherit;
+    background-color: #7f8c8d;
+    border-radius: .3em;
+    color: #fff;
+}
+
+.label {
+    font-size: 1.20rem;
+}
+
+input:focus {
+    box-shadow: 0 0 3px #7f8c8d;
+}
+
+.output > div {
+    padding: 5px;
 }
 
 #byNameSearch,
