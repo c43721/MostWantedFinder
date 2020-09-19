@@ -65,8 +65,8 @@ function alertToUser(id) {
 
     let resultString = "";
     for (const [key, value] of Object.entries(userObject)) {
-        if (key === "parents") resultString += `${key}: ${value.length ? getParents(value).map(parent => parent.firstName).join(", ") : "NO PARENTS"}\n`;
-        else if (key === "currentSpouse") resultString += `${key}: ${value ? getPersonFromId(value).firstName : "NO SPOUSE"}\n`;
+        if (key === "parents") resultString += `${key}: ${value.length ? getParents(value).map(parent => `${parent.firstName} ${parent.lastName}`).join(", ") : "No parents"}\n`;
+        else if (key === "currentSpouse") resultString += `${key}: ${value ? `${getPersonFromId(value).firstName} ${getPersonFromId(value).lastName}` : "No spouse"}\n`;
         else resultString += `${key}: ${value}\n`;
     }
 
@@ -78,7 +78,7 @@ function alertDescendants(id) {
 
     const relations = result.map(familyMember => `${familyMember.firstName} ${familyMember.lastName}`).join("\n");
 
-    alert(relations || `NO CHILDREN`);
+    alert(relations ? `Children:\n\n${relations}` : `No children.`);
 }
 
 function alertFamily(id) {
@@ -92,7 +92,7 @@ function alertFamily(id) {
         return `${familyMember.firstName} ${familyMember.lastName}: Sibling`;
     }).join("\n");
 
-    alert(relations || "NO FAMILY");
+    alert(relations || "No family.");
 }
 
 //FILTER TEXT FUNCTIONS
