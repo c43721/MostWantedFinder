@@ -55,7 +55,7 @@ function alertToUser(id) {
 
     let resultString = "";
     for (const [key, value] of Object.entries(userObject)) {
-        if (key === "parents") resultString += `${key}: ${value.length ? getParents(value).map(parent => parent.firstName).join(', ') : "NO PARENTS"}\n`;
+        if (key === "parents") resultString += `${key}: ${value ? getParents(value).map(parent => parent.firstName).join(", ") : "NO PARENTS"}\n`;
         else if (key === "currentSpouse") resultString += `${key}: ${value ? getPersonFromId(value).firstName : "NO SPOUSE"}\n`;
         else resultString += `${key}: ${value}\n`;
     }
@@ -73,8 +73,14 @@ function alertDescendants(id) {
 
 function alertFamily(id) {
     const result = getImmediateFamily(id);
+    const personFromId = getPersonFromId(id);
 
-    const relations = result.map(familyMember => `${familyMember.firstName} ${familyMember.lastName}`).join("\n");
+    const relations = result.map(familyMember => {
+        if (familyMember.currentSpouse === id) return `${familyMember.firstName} ${familyMember.lastName}: Spouse`;
+        else if (personFromId.parents.includes(familyMember.id)) return `${familyMember.firstName} ${familyMember.lastName}: Parent`;
+        else if (familyMember.parents.includes(id)) return `${familyMember.firstName} ${familyMember.lastName}: Child`;
+        return `${familyMember.firstName} ${familyMember.lastName}: Sibling`;
+    }).join("\n");
 
     alert(relations || "NO FAMILY");
 }
@@ -146,7 +152,7 @@ function getDescendants(id, array = data) {
 function getParents(parentArray) {
     const parentObjectArray = [];
     for (const parent of parentArray)
-        parentObjectArray.push(getPersonFromId(parent.id));
+        parentObjectArray.push(getPersonFromId(parent));
 
     return parentObjectArray;
 }
